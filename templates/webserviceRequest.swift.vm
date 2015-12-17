@@ -7,7 +7,7 @@
 // could extend from base Class
 class ${project.name}/${entity.name}Client  { 
 let baseUrl = "http://localhost:9000/${project.name}/api/"
-#parse('swift/webserviceRequest.swift.parse')
+#parse('PerfectSwift/webserviceRequest.swift.parse')
 }
 
 
