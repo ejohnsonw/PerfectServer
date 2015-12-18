@@ -2,7 +2,7 @@
 #set ($description="A class to create webservice requests for ${entity.name}")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
-#set ($enabled="true")
+#set ($enabled="false")
 #set ($filep="${entity.name}Handlers.swift")
 #set ($filename="${outputDir}/${filep}")
 public func PerfectServerModuleInit() {
