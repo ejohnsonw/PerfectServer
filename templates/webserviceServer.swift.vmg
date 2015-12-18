@@ -13,11 +13,26 @@ class ${project.name}/WebServiceClient {
 //Api with grails backend
 //let baseUrl = "http://localhost:8080/api/"
 
+public func PerfectServerModuleInit() {
+
+Routing.Handler.registerGlobally()  
+#foreach( $entity in $entities)
+  Routing.Routes["GET", ["/api/${entity.getVariableName()}", "index.html"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
+  Routing.Routes["POST", ["/api/${entity.getVariableName()}", "index.html"] ] = { (_:WebResponse) in return ${entity.name}CreateHandler() }
+  Routing.Routes["GET", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}RetrieveHandler() }
+  Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
+#end
+
+  // Check the console to see the logical structure of what was installed.
+  print("\(Routing.Routes.description)")
+}
+
 #foreach( $entity in $entities)
 #parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
 #end
 
-}
 
 
  

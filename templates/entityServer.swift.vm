@@ -5,6 +5,21 @@
 #set ($enabled="true")
 #set ($filep="${entity.name}Handlers.swift")
 #set ($filename="${outputDir}/${filep}")
+public func PerfectServerModuleInit() {
+  
+  
+  Routing.Handler.registerGlobally()
+  
+  Routing.Routes["GET", ["/api/${entity.getVariableName()}", "index.html"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
+  Routing.Routes["POST", ["/api/${entity.getVariableName()}", "index.html"] ] = { (_:WebResponse) in return ${entity.name}CreateHandler() }
+  Routing.Routes["GET", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}RetrieveHandler() }
+  Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
+
+  // Check the console to see the logical structure of what was installed.
+  print("\(Routing.Routes.description)")
+}
 
 #parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
 
