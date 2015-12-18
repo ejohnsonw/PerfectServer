@@ -4,7 +4,7 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="${project.name}Server.swift")
-#set ($filename="${outputDir}/${filep}")
+#set ($filename="${outputDir}/${project.name}/${filep}")
 
 class ${project.name}/WebServiceClient {
 let baseUrl = "http://localhost:9000/${project.name}/api/"
