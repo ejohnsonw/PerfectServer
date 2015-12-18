@@ -3,12 +3,11 @@
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="${entity.name}WebServiceClient.swift")
+#set ($filep="${entity.name}WebServiceRequest.swift")
 #set ($filename="${outputDir}/${project.name}/${filep}")
 
-// could extend from base Class
-class ${project.name}/${entity.name}Client  { 
-let baseUrl = "http://localhost:9000/${project.name}/api/"
+class ${entity.name}WebServiceRequest  { 
+let baseUrl = "http://localhost:8080/api/"
 #parse('/PerfectSwift/templates/webserviceRequest.swift.parse')
 }
 

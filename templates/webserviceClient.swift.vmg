@@ -2,7 +2,7 @@
 #set ($description="Project Webservice")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
-#set ($enabled="true")
+#set ($enabled="false")
 #set ($filep="${project.name}WebServiceClient.swift")
 #set ($filename="${outputDir}/${project.name}/${filep}")
 

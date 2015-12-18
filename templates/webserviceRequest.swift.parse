@@ -1,5 +1,5 @@
 
-func add${entity.name} (params:Dictionary){
+func create (params:Dictionary){
 
 var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}"))
 var session = NSURLSession.sharedSession()
@@ -32,7 +32,7 @@ task.resume()
 }
 
 
-func update${entity.name} (params:Dictionary){
+func update (params:Dictionary){
 
 var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params['id']))
 var session = NSURLSession.sharedSession()
@@ -66,7 +66,7 @@ task.resume()
 
 
 
-func delete${entity.name} (params:Dictionary){
+func delete(params:Dictionary){
 
 var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params['id']))
 var session = NSURLSession.sharedSession()
@@ -99,7 +99,7 @@ task.resume()
 }
 
 
-func get${entity.name} (params:Dictionary){
+func retrieve(params:Dictionary){
 
 var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params['id']))
 var session = NSURLSession.sharedSession()
@@ -132,8 +132,8 @@ task.resume()
 }
 
 
-func list${entity.name}(){
-var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/""))
+func list(){
+var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"))
 var session = NSURLSession.sharedSession()
 request.HTTPMethod = "GET"
 
