@@ -1,12 +1,13 @@
 #set ($language="Swift")
-#set ($description="Domain Class")
+#set ($description="Project Webservice")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
-#set ($filename="${outputDir}/${project.name}WebServiceClient.swift")
+#set ($enabled="true")
+#set ($filep="${project.name}WebServiceClient.swift")
+#set ($filename="${outputDir}/${filep}")
 
 class ${project.name}/WebServiceClient {
 let baseUrl = "http://localhost:9000/${project.name}/api/"
-
 #foreach( $entity in $entities)
 #parse('/PerfectSwift/templates/webserviceRequest.swift.parse')
 #end

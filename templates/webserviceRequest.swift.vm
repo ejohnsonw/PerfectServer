@@ -2,8 +2,9 @@
 #set ($description="A class to create webservice requests for ${entity.name}")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
-#set ($enable="false")
-#set ($filename="${outputDir}/${entity.name}Client.swift")
+#set ($enabled="false")
+#set ($filep="${entity.name}WebServiceClient.swift")
+#set ($filename="${outputDir}/${filep}")
 
 // could extend from base Class
 class ${project.name}/${entity.name}Client  { 
