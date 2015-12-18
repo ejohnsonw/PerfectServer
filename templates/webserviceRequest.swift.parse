@@ -1,4 +1,3 @@
-#if(${entity.checkForAnnotation("Generate")})
 
 func add${entity.name} (params:Dictionary){
 
@@ -156,4 +155,3 @@ func remove${attribute.generic}From${entity.name}(id:Long){
 #end
 
 
-#end 
