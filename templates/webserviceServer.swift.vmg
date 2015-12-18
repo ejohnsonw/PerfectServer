@@ -1,0 +1,18 @@
+#set ($language="Swift")
+#set ($description="Swift Server")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="${project.name}Server.swift")
+#set ($filename="${outputDir}/${filep}")
+
+class ${project.name}/WebServiceClient {
+let baseUrl = "http://localhost:9000/${project.name}/api/"
+#foreach( $entity in $entities)
+#parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
+#end
+
+}
+
+
+ 

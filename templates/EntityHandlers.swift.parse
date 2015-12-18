@@ -1,0 +1,54 @@
+
+import PerfectLib
+
+public func PerfectServerModuleInit() {
+  
+  
+  Routing.Handler.registerGlobally()
+  
+  Routing.Routes["GET", ["/api/${entity.getVariableName()}", "index.html"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
+  Routing.Routes["POST", ["/api/${entity.getVariableName()}", "index.html"] ] = { (_:WebResponse) in return ${entity.name}CreateHandler() }
+  Routing.Routes["GET", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}RetrieveHandler() }
+  Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
+
+  // Check the console to see the logical structure of what was installed.
+  print("\(Routing.Routes.description)")
+}
+
+class ${entity.name}ListHandler: RequestHandler {
+  
+  func handleRequest(request: WebRequest, response: WebResponse) {
+    response.appendBodyString("Index handler: You accessed path \(request.requestURI())")
+    response.requestCompletedCallback()
+  }
+}
+
+class ${entity.name}CreateHandler: RequestHandler {
+  func handleRequest(request: WebRequest, response: WebResponse) {
+    response.appendBodyString("Create handler: You accessed path \(request.requestURI())")
+    response.requestCompletedCallback()
+  }
+}
+
+class ${entity.name}RetrieveHandler: RequestHandler {
+  func handleRequest(request: WebRequest, response: WebResponse) {
+    response.appendBodyString("Retrieve handler: You accessed path \(request.requestURI())")
+    response.requestCompletedCallback()
+  }
+}
+
+class ${entity.name}UpdateHandler: RequestHandler {
+  func handleRequest(request: WebRequest, response: WebResponse) {
+    response.appendBodyString("Retrieve handler: You accessed path \(request.requestURI())")
+    response.requestCompletedCallback()
+  }
+}
+
+class ${entity.name}DeleteHandler: RequestHandler {
+  func handleRequest(request: WebRequest, response: WebResponse) {
+    response.appendBodyString("Retrieve handler: You accessed path \(request.requestURI())")
+    response.requestCompletedCallback()
+  }
+}
