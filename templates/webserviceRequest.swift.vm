@@ -4,7 +4,7 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="${entity.name}WebServiceRequest.swift")
-#set ($filename="${outputDir}/${project.name}/${filep}")
+#set ($filename="${outputDir}/${project.name}/Client/${filep}")
 
 class ${entity.name}WebServiceRequest  { 
 let baseUrl = "http://localhost:8080/api/"
