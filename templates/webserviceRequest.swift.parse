@@ -34,7 +34,7 @@ task.resume()
 
 func update (params:Dictionary){
 
-var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params['id']))
+var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params["id"]))
 var session = NSURLSession.sharedSession()
 request.HTTPMethod = "POST"
 
@@ -68,7 +68,7 @@ task.resume()
 
 func delete(params:Dictionary){
 
-var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params['id']))
+var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params["id"]))
 var session = NSURLSession.sharedSession()
 request.HTTPMethod = "DELETE"
 
@@ -101,7 +101,7 @@ task.resume()
 
 func retrieve(params:Dictionary){
 
-var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params['id']))
+var request = NSMutableURLRequest(URL: NSURL(string: baseUrl+"${entity.getVariableName()}/"+params["id"]))
 var session = NSURLSession.sharedSession()
 request.HTTPMethod = "GET"
 

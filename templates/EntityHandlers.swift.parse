@@ -1,5 +1,10 @@
-
-
+#set ($language="Swift")
+#set ($description="Swift Server")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="${entity.name}Handlers.swift")
+#set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
 class ${entity.name}ListHandler: RequestHandler {
   

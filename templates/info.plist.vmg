@@ -1,8 +1,9 @@
 #set ($language="Swift")
 #set ($description="Info.plist")
 #set ($author="Evol Johnson")
-#set ($overwrite="true")
-#set ($enabled="true")
+#set ($overwrite="false")
+#set ($enabled="false")
+#set ($header="false")
 #set ($filep="Info.plist")
 #set ($filename="${outputDir}/${filep}")
 <?xml version="1.0" encoding="UTF-8"?>

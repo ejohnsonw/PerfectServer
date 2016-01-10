@@ -4,7 +4,7 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="${project.name}Server.swift")
-#set ($filename="${outputDir}/${project.name}/${filep}")
+#set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
 
 import PerfectLib
@@ -28,9 +28,9 @@ Routing.Handler.registerGlobally()
   print("\(Routing.Routes.description)")
 }
 
-#foreach( $entity in $entities)
-#parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
-#end
+##foreach( $entity in $entities)
+##parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
+##end
 
 
 
