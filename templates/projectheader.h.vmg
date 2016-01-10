@@ -1,8 +1,8 @@
 #set ($language="Swift")
 #set ($description="Swift Server")
 #set ($author="Evol Johnson")
-#set ($overwrite="true")
-#set ($enabled="true")
+#set ($overwrite="false")
+#set ($enabled="false")
 #set ($filep="${project.name}.h")
 #set ($filename="${outputDir}/${project.name}/${filep}")
 
