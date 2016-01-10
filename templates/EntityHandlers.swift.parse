@@ -1,5 +1,5 @@
 #set ($language="Swift")
-#set ($description="Swift Server")
+#set ($description="Adds REST routes for entity ${entity.name}")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
