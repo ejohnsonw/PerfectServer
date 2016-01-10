@@ -1,9 +1,9 @@
 #set ($language="Swift")
 #set ($description="A class to create webservice requests for ${entity.name}")
 #set ($author="Evol Johnson")
-#set ($overwrite="true")
+#set ($overwrite="false")
 #set ($enabled="false")
-#set ($filep="${entity.name}Handlers.swift")
+#set ($filep="${entity.name}HandlersOO.swift")
 #set ($filename="${outputDir}/${filep}")
 public func PerfectServerModuleInit() {
   
@@ -21,7 +21,7 @@ public func PerfectServerModuleInit() {
   print("\(Routing.Routes.description)")
 }
 
-#parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
+##parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
 
 
 

@@ -6,6 +6,8 @@
 #set ($filep="${entity.name}Handlers.swift")
 #set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
+import PerfectLib
+
 class ${entity.name}ListHandler: RequestHandler {
   
   func handleRequest(request: WebRequest, response: WebResponse) {
