@@ -1,7 +1,4 @@
 
-
-import PerfectLib
-
 class ${entity.name}ListHandler: RequestHandler {
   
   func handleRequest(request: WebRequest, response: WebResponse) {

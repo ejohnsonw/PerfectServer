@@ -1,0 +1,19 @@
+#set ($language="Swift")
+#set ($description="Project Configuration")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="Config.swift")
+#set ($filename="${outputDir}/${project.name}/Server/${filep}")
+import PerfectLib
+
+class Config {
+    static let modelName = "${project.name}
+    static let dbPath = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + modelName
+    static let serverPort = 8181
+}
+
+
+
+
+ 

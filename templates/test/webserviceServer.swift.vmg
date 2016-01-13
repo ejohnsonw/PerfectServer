@@ -1,0 +1,55 @@
+#set ($language="Swift")
+#set ($description="Swift Server")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="${project.name}Server.swift")
+#set ($filename="${outputDir}/${project.name}Tests/Server/${filep}")
+
+
+import XCTest
+@testable import ${project.name}
+
+class ${project.name}Tests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+
+    #foreach( $entity in $entities)
+  //Routes for ${entity.name}
+  Routing.Routes["GET", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
+  Routing.Routes["POST", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}CreateHandler() }
+  Routing.Routes["GET", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}RetrieveHandler() }
+  Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+  Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
+
+
+    
+#end
+#foreach( $entity in $entities)
+#parse('/PerfectSwift/templates/test/EntityTestHandlers.swift.parse')
+#end
+  
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+ 

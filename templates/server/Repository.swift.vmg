@@ -1,0 +1,33 @@
+#set ($language="Swift")
+#set ($description="Project Configuration")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="Config.swift")
+#set ($filename="${outputDir}/${project.name}/Server/${filep}")
+
+import PerfectLib
+
+enum RepositoryError : ErrorType {
+    case Select(Int)
+    case Insert(Int)
+    case Update(Int)
+    case Delete(Int)
+}
+
+class Repository {
+    let db: SQLite!
+    
+    init(db: SQLite) {
+        self.db = db
+    }
+    
+    func lastInsertId() -> Int {
+        return db.lastInsertRowID()
+    }
+}
+
+
+
+
+ 

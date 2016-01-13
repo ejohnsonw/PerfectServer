@@ -1,0 +1,29 @@
+    //Test GET for /api/${entity.getVariableName()}
+  func testList${entity.name}() {
+        
+    }
+
+    //Test POST for /api/${entity.getVariableName()}
+  func testCreate${entity.name}() {
+        
+    }
+
+    //Test GET for /api/${entity.getVariableName()}/{id}
+  func tesRetrieve${entity.name}() {
+        
+    }
+
+    //Test PUT for /api/${entity.getVariableName()}/{id}
+  func testUpdate${entity.name}() {
+        
+    }
+
+    //Test POST for /api/${entity.getVariableName()}/{id}
+  func testUpdate${entity.name}() {
+        
+    }
+
+    //Test DELETE for /api/${entity.getVariableName()}/{id}
+  func testDelete${entity.name}() {
+        
+    }
