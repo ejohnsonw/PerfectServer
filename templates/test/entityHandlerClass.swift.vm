@@ -6,7 +6,7 @@
 #set ($filep="${entity.name}Handlers.swift")
 #set ($filename="${outputDir}/${filep}")
 
-#parse('/PerfectSwift/templates/EntityHandlers.swift.parse')
+#parse('/PerfectSwift/templates/test/EntityHandlers.swift.parse')
 
 
 

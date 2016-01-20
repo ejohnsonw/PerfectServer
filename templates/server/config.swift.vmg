@@ -10,7 +10,7 @@ import PerfectLib
 class Config {
     static let modelName = "${project.name}
     static let dbPath = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + modelName
-    static let serverPort = 8181
+    static let serverPort = 9000
 }
 
 

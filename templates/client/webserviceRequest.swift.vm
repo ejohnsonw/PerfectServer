@@ -8,7 +8,7 @@
 
 class ${entity.name}WebServiceRequest  { 
 let baseUrl = "http://localhost:8080/api/"
-#parse('/PerfectSwift/templates/webserviceRequest.swift.parse')
+#parse('/PerfectSwift/templates/client/webserviceRequest.swift.parse')
 }
 
 

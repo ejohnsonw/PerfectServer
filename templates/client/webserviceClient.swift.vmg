@@ -9,7 +9,7 @@
 class ${project.name}/WebServiceClient {
 let baseUrl = "http://localhost:8181/api/"
 #foreach( $entity in $entities)
-#parse('/PerfectSwift/templates/webserviceRequest.swift.parse')
+#parse('/PerfectSwift/templates/client/webserviceRequest.swift.parse')
 #end
 
 }
