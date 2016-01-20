@@ -36,7 +36,7 @@ class ${project.name}Tests: XCTestCase {
     
 #end
 #foreach( $entity in $entities)
-#parse('/PerfectSwift/templates/test/EntityTestHandlers.swift.parse')
+#parse('/PerfectSwift/test/EntityTestHandlers.swift.parse')
 #end
   
     

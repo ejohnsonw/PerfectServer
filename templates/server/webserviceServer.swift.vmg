@@ -29,7 +29,7 @@ Routing.Handler.registerGlobally()
 }
 
 ##foreach( $entity in $entities)
-##parse('/PerfectSwift/templates/server/EntityHandlers.swift.parse')
+##parse('/PerfectSwift/server/EntityHandlers.swift.parse')
 ##end
 
 
