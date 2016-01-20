@@ -3,14 +3,14 @@
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="Config.swift")
+#set ($filep="${entity.name}Entity.swift")
 #set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
 
 import PerfectLib
 
-class ${entity.name}Entity : Entity {
-    #foreach($attribute : $entity.attributes)
+class ${entity.name}Entity : Repository {
+    #foreach($attribute in $entity.attributes)
       var ${attribute.name} : {dth.findType($language,$attribute.type)}
     #end
     
@@ -18,7 +18,7 @@ class ${entity.name}Entity : Entity {
     func toDictionary() -> [String: Any] {
         #set($cont=0) 
         return [
-           #foreach($attribute : $entity.attributes)
+           #foreach($attribute in $entity.attributes)
             #if($cont > 0),#end"${attribute.name}" : ${attribute.name}
             #set($cont=$cont+1)
            #end
