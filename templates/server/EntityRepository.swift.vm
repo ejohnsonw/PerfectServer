@@ -1,0 +1,27 @@
+#set ($language="Swift")
+#set ($description="Entity File")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="Config.swift")
+#set ($filename="${outputDir}/${project.name}/Server/${filep}")
+
+
+import PerfectLib
+
+class ${entity.name}Entity : Repository {
+    #foreach($attribute : $entity.attributes)
+      var ${attribute.name} : {dth.findType($language,$attribute.type)}
+    #end
+    
+    
+    func toDictionary() -> [String: Any] {
+        #set($cont=0) 
+        return [
+           #foreach($attribute : $entity.attributes)
+            #if($cont > 0),#end"${attribute.name}" : ${attribute.name}
+            #set($cont=$cont+1)
+           #end
+        ]
+    }
+}
