@@ -3,7 +3,7 @@
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="${entity.name}Entity.swift")
+#set ($filep="${entity.name}Repository.swift")
 #set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
 
