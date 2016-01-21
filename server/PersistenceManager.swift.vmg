@@ -4,7 +4,7 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="PersistenceManager.swift")
-#set ($filename="${outputDir}/${project.name}/Server/${filep}")
+#set ($filename="${outputDir}/${project.name}/server/${filep}")
 
 import PerfectLib
 

@@ -4,7 +4,7 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="${project.name}Server.swift")
-#set ($filename="${outputDir}/${project.name}Tests/tests/${filep}")
+#set ($filename="${outputDir}/${project.name}/test/${filep}")
 
 
 import XCTest
