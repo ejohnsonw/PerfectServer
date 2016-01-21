@@ -3,13 +3,13 @@
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="Config.swift")
+#set ($filep="${entity.name}.swift")
 #set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
 
 import PerfectLib
 
-class ${entity.name}Entity : Entity {
+class ${entity.name} : Entity {
     #foreach($attribute in $entity.attributes)
       var ${attribute.name} : ${dth.findType($language,$attribute.type)}
     #end

@@ -3,7 +3,7 @@
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="Config.swift")
+#set ($filep="Repository.swift")
 #set ($filename="${outputDir}/${project.name}/Server/${filep}")
 
 import PerfectLib

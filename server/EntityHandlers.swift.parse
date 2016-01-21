@@ -1,5 +1,5 @@
 
-class ${entity.name}ListHandler: RequestHandler {
+class ${entity.name}ListHandler: BaseRequestHandler  {
   
   func handleRequest(request: WebRequest, response: WebResponse) {
     response.appendBodyString("Index handler: You accessed path \(request.requestURI())")

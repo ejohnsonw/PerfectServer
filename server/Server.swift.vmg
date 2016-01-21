@@ -11,8 +11,10 @@ import PerfectLib
 
 
 public func PerfectServerModuleInit() {
-
-Routing.Handler.registerGlobally()  
+Routing.Handler.registerGlobally()
+Routing.Routes["GET", ["/assets/*/*"]] = { _ in return StaticFileHandler() }
+Routing.Routes["GET", ["/uploads/*"]] = { _ in return StaticFileHandler() }
+  
 #foreach( $entity in $entities)
   //Routes for ${entity.name}
   Routing.Routes["GET", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
@@ -21,11 +23,13 @@ Routing.Handler.registerGlobally()
   Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
   Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
   Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
-
 #end
 
-  // Check the console to see the logical structure of what was installed.
-  print("\(Routing.Routes.description)")
+ print("\(Routing.Routes.description)")
+ 
+//Initialize PM and repositories  
+PersistenceManager.sharedInstance
+   
 }
 
 ##foreach( $entity in $entities)

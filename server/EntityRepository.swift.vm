@@ -9,19 +9,111 @@
 
 import PerfectLib
 
-class ${entity.name}Entity : Repository {
-    #foreach($attribute in $entity.attributes)
-      var ${attribute.name} : {dth.findType($language,$attribute.type)}
-    #end
-    
-    
-    func toDictionary() -> [String: Any] {
-        #set($cont=0) 
-        return [
-           #foreach($attribute in $entity.attributes)
-            #if($cont > 0),#end"${attribute.name}" : ${attribute.name}
+class ${entity.name}Repository : Repository {
+    func insert(entity: ${entity.name}) throws -> Int {
+       	let sql = "${sqlHelper.insertSQL(${entity},"SQLite")}"
+        try db.execute(sql) { (stmt:SQLiteStmt) -> () in
+        	#set($cont=1)
+        	#foreach($attribute in ${entity.attributes})
+            try stmt.bind(":${attribute.name}", entity.${attribute.name})
             #set($cont=$cont+1)
-           #end
-        ]
+            #end
+        }
+        let errCode = db.errCode()
+        if errCode > 0 {
+            throw RepositoryError.Insert(errCode)
+        }
+        return db.changes()
+    }
+    
+    func update(entity: ${entity.name}) throws -> Int {
+        guard let id = entity.id else {
+            return 0
+        }
+        
+        let sql = "${sqlHelper.updateSQL(${entity},"SQLite")}"
+        try db.execute(sql) { (stmt:SQLiteStmt) -> () in
+           #set($cont=1)
+        	#foreach($attribute in ${entity.attributes})
+            try stmt.bind(":${attribute.name}", entity.${attribute.name})
+            #set($cont=$cont+1)
+            #end
+        }
+        
+        let errCode = db.errCode()
+        if errCode > 0 {
+            throw RepositoryError.Update(errCode)
+        }
+        
+        return db.changes()
+    }
+    
+    func delete(entity: ${entity.name}) throws -> Int {
+        guard let id = entity.id else {
+            return 0
+        }
+        
+        let sql = "DELETE FROM ${entity.getVariableName()} WHERE id = :id"
+        try db.execute(sql) { (stmt:SQLiteStmt) -> () in
+            try stmt.bind(":id", id)
+        }
+        
+        let errCode = db.errCode()
+        if errCode > 0 {
+            throw RepositoryError.Delete(errCode)
+        }
+        
+        return db.changes()
+    }
+    
+    func retrieve(id: Int) throws -> ${entity.name}? {
+        let sql = "SELECT * FROM ${entity.getVariableName()} WHERE id = :id"
+        var columns = [Any]()
+        try db.forEachRow(sql, doBindings: { (stmt:SQLiteStmt) -> () in
+            try stmt.bind(":id", id)
+        }) { (stmt:SQLiteStmt, r:Int) -> () in
+        	#set($cont=0)
+        	#foreach($attribute in ${entity.attributes})
+            columns.append(stmt.column${attribute.type}(${cont}))
+            #set($cont=$cont+1)
+            #end
+        }
+        
+        let errCode = db.errCode()
+        if errCode > 0 {
+            throw RepositoryError.Select(errCode)
+        }
+        
+        guard columns.count > 0 else {
+            return nil
+        }
+        
+        return ${entity.name}(
+        	#set($cont=0)
+        	#foreach($attribute in ${entity.attributes})
+            #if($cont>0),#end${attribute.name}: columns[${cont}] as? ${attribute.type}
+            #set($cont=$cont+1)
+            #end
+        )
+    }
+    
+    func list() throws -> [${entity.name}] {
+        let sql = "SELECT * FROM ${entity.getVariableName()} "
+        var entities = [${entity.name}]()
+        try db.forEachRow(sql, doBindings: { (stmt:SQLiteStmt) -> () in
+            //nothing to see here
+        }) { (stmt:SQLiteStmt, r:Int) -> () in
+        	entities.append(
+        		${entity.name}(
+        		#set($cont=0)
+        	#foreach($attribute in ${entity.attributes})
+            #if($cont>0),#end${attribute.name}: stmt.column${attribute.type}(${cont})
+            #set($cont=$cont+1)
+            #end
+        		
+        		)
+        	)
+        }
+        return entities
     }
 }

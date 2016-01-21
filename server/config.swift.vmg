@@ -11,6 +11,12 @@ class Config {
     static let modelName = "${project.name}
     static let dbPath = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + modelName
     static let serverPort = 9000
+    
+    static let sessionName = "session"
+    static let sessionExpires = 60
+    static let uploadDirPath = PerfectServer.staticPerfectServer.homeDir() + "webroot/uploads/"
+    static let uploadDirUrl = "/uploads/"
+    
 }
 
 
