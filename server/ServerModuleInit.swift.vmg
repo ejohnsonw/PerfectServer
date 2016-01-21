@@ -32,9 +32,6 @@ PersistenceManager.sharedInstance
    
 }
 
-##foreach( $entity in $entities)
-##parse('/PerfectSwift/server/EntityHandlers.swift.parse')
-##end
 
 
 
