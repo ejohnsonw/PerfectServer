@@ -8,14 +8,21 @@
 
 
 import PerfectLib
-
+---->>>>>>>
 class ${entity.name}Repository : Repository {
     func insert(entity: ${entity.name}) throws -> Int {
        	let sql = "${sqlHelper.insertSQL(${entity},"SQLite")}"
         try db.execute(sql) { (stmt:SQLiteStmt) -> () in
         	#set($cont=1)
         	#foreach($attribute in ${entity.attributes})
+        	${attribute.domain}
+        	#if(${attribute.domain} == "true")
+        	try stmt.bind(":${attribute.name}_id", entity.${attribute.name}_id)
+        	#end
+        	#if($attribute.domain == false && $attribute.isCollection() == false)
             try stmt.bind(":${attribute.name}", entity.${attribute.name})
+            #end
+            
             #set($cont=$cont+1)
             #end
         }
@@ -35,7 +42,12 @@ class ${entity.name}Repository : Repository {
         try db.execute(sql) { (stmt:SQLiteStmt) -> () in
            #set($cont=1)
         	#foreach($attribute in ${entity.attributes})
+            #if($attribute.domain == true)
+        	try stmt.bind(":${attribute.name}_id", entity.${attribute.name}_id)
+        	#end
+        	#if(!$attribute.domain && !$attribute.isCollection())
             try stmt.bind(":${attribute.name}", entity.${attribute.name})
+            #end
             #set($cont=$cont+1)
             #end
         }
@@ -74,7 +86,13 @@ class ${entity.name}Repository : Repository {
         }) { (stmt:SQLiteStmt, r:Int) -> () in
         	#set($cont=0)
         	#foreach($attribute in ${entity.attributes})
-            columns.append(stmt.column${attribute.type}(${cont}))
+        	#if($attribute.domain == true)
+        	columns.append(stmt.columnInt(${cont}))
+        	#end
+        	#if(!$attribute.domain && !$attribute.isCollection())
+            columns.append(stmt.column${sqlHelper.bindType("SQLite",${attribute})}(${cont}))
+            #end
+            
             #set($cont=$cont+1)
             #end
         }
@@ -91,7 +109,12 @@ class ${entity.name}Repository : Repository {
         return ${entity.name}(
         	#set($cont=0)
         	#foreach($attribute in ${entity.attributes})
-            #if($cont>0),#end${attribute.name}: columns[${cont}] as? ${attribute.type}
+            #if($attribute.domain == true)
+        	#if($cont>0),#end${attribute.name}: columns[${cont}] as? Integer
+        	#end
+        	#if(!$attribute.domain && !$attribute.isCollection())
+            #if($cont>0),#end${attribute.name}: columns[${cont}] as? ${dth.findType($language,$attribute)}
+            #end
             #set($cont=$cont+1)
             #end
         )
@@ -107,7 +130,12 @@ class ${entity.name}Repository : Repository {
         		${entity.name}(
         		#set($cont=0)
         	#foreach($attribute in ${entity.attributes})
-            #if($cont>0),#end${attribute.name}: stmt.column${attribute.type}(${cont})
+            #if($attribute.domain == true)
+        	#if($cont>0),#end${attribute.name}: columns[${cont}] as? Integer
+        	#end
+        	#if(!$attribute.domain && !$attribute.isCollection())
+            #if($cont>0),#end${attribute.name}: columns[${cont}] as? ${dth.findType($language,$attribute)}
+            #end
             #set($cont=$cont+1)
             #end
         		
