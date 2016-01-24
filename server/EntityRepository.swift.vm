@@ -14,14 +14,12 @@ class ${entity.name}Repository : Repository {
         try db.execute(sql) { (stmt:SQLiteStmt) -> () in
         	#set($cont=1)
         	#foreach($attribute in ${entity.attributes})
-        	${attribute.domain}
         	#if(${attribute.domain} == "true")
         	try stmt.bind(":${attribute.name}_id", entity.${attribute.name}_id)
         	#end
         	#if($attribute.domain == false && $attribute.isCollection() == false)
             try stmt.bind(":${attribute.name}", entity.${attribute.name})
             #end
-            
             #set($cont=$cont+1)
             #end
         }
