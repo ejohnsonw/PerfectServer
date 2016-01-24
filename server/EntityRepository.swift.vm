@@ -89,7 +89,6 @@ class ${entity.name}Repository : Repository {
         	#if(!$attribute.domain && !$attribute.isCollection())
             columns.append(stmt.column${sqlHelper.bindType("SQLite",${attribute})}($cont))
             #end
-            
             #set($cont=$cont+1)
             #end
         }
@@ -135,7 +134,6 @@ class ${entity.name}Repository : Repository {
             #end
             #set($cont=$cont+1)
             #end
-        		
         		)
         	)
         }

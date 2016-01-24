@@ -1,5 +1,5 @@
 #set ($language="Swift")
-#set ($description="Project Configuration")
+#set ($description="PersistenceManager: an Adapter to deal with persistence layer")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
