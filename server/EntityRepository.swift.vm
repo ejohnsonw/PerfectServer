@@ -8,7 +8,6 @@
 
 
 import PerfectLib
----->>>>>>>
 class ${entity.name}Repository : Repository {
     func insert(entity: ${entity.name}) throws -> Int {
        	let sql = "${sqlHelper.insertSQL(${entity},"SQLite")}"
@@ -90,7 +89,7 @@ class ${entity.name}Repository : Repository {
         	columns.append(stmt.columnInt(${cont}))
         	#end
         	#if(!$attribute.domain && !$attribute.isCollection())
-            columns.append(stmt.column${sqlHelper.bindType("SQLite",${attribute})}(${cont}))
+            columns.append(stmt.column${sqlHelper.bindType("SQLite",${attribute})}($cont))
             #end
             
             #set($cont=$cont+1)
