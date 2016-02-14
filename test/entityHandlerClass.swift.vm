@@ -3,12 +3,7 @@
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="${entity.name}Handlers.swift")
-#set ($filename="${outputDir}/${filep}")
+#set ($filep="Test${entity.name}Handlers.swift")
+#set ($filename="${outputDir}Tests/${filep}")
 
 #parse('/PerfectSwift/test/EntityTestHandlers.swift.parse')
-
-
-
-
- 

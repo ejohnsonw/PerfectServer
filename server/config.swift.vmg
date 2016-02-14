@@ -1,25 +1,29 @@
 #set ($language="Swift")
-#set ($description="Project Configuration")
+#set ($description="Server Configuration")
 #set ($author="Evol Johnson")
-#set ($overwrite="true")
+#set ($overwrite="false")
 #set ($enabled="true")
 #set ($filep="Config.swift")
-#set ($filename="${outputDir}/${project.name}/server/${filep}")
+#set ($filename="${outputDir}/${filep}")
 import PerfectLib
 
 class Config {
-    static let modelName = "${project.name}
-    static let dbPath = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + modelName
-    static let serverPort = 9000
-    
+
+	static let serverPort = 9000
     static let sessionName = "session"
     static let sessionExpires = 60
     static let uploadDirPath = PerfectServer.staticPerfectServer.homeDir() + "webroot/uploads/"
     static let uploadDirUrl = "/uploads/"
     
+	//SQLite Configuration
+    static let modelName = "${project.name}"
+    static let dbPath = PerfectServer.staticPerfectServer.homeDir() + serverSQLiteDBs + modelName
+    
+    //MySQL Configuration
+    static let HOST = "127.0.0.1"
+    static let USER = "perfect"
+    static let PASSWORD = "perfect123"
+    static let SCHEMA = "${project.name}"
+    
+    
 }
-
-
-
-
- 

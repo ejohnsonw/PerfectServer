@@ -1,40 +1,32 @@
 #set ($language="Swift")
-#set ($description="PersistenceManager: an Adapter to deal with persistence layer")
+#set ($description="SQLite PersistenceManager: an Adapter to deal with persistence layer")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
 #set ($enabled="true")
-#set ($filep="PersistenceManager.swift")
-#set ($filename="${outputDir}/${project.name}/server/${filep}")
+#set ($filep="PersistenceManagerSQLite.swift")
+#set ($filename="${outputDir}/${filep}")
 
 import PerfectLib
-
-
-class PersistenceManager {
-	static let sharedInstance = PersistenceManager()
+class PersistenceManagerSQLite {
+	static let sharedInstance = PersistenceManagerSQLite()
 	
     var db: SQLite!
     #foreach( $entity in $entities)
-    lazy var ${entity.getVariableName()}Repository :  ${entity.name}Repository()! = null; 
+    var ${entity.getVariableName()}Repository :  ${entity.name}Repository! 
 	#end
     init() {
-        // Create our SQLite database.
-    do {
-        db = try SQLite(Config.dbPath) 
-        #foreach( $entity in $entities)
-        	try sqlite.execute("${sqlHelper.createTable(${entity},"SQLite")}")
-        	lazy var ${entity.getVariableName()}Repository = ${entity.name}Repository(db:self.db);
-		#end
-
-    } catch (let e){
-        print("Failure creating database at " + Config.dbPath)
-        print(e)
+    	// Create our SQLite database.
+    	do {
+        	db = try SQLite(Config.dbPath) 
+#foreach( $entity in $entities)
+			
+			//Variables for ${entity.name}
+			${entity.getVariableName()}Repository = ${entity.name}Repository(db:self.db);
+			try ${entity.getVariableName()}Repository.createTable()
+#end
+    	} catch (let e){
+        	print("Failure creating database at " + Config.dbPath)
+        	print(e)
+    	}
     }
-    }
-    
-    
 }
-
-
-
-
- 

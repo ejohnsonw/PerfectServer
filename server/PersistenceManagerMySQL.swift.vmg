@@ -1,0 +1,40 @@
+#set ($language="Swift")
+#set ($description="MySQL PersistenceManager: an Adapter to deal with persistence layer")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="PersistenceManagerMySQL.swift")
+#set ($filename="${outputDir}/${filep}")
+
+import PerfectLib
+import MySQL
+
+class PersistenceManagerMySQL {
+	static let sharedInstance = PersistenceManagerMySQL()
+    var mysql = MySQL ()
+    #foreach( $entity in $entities)
+    var ${entity.getVariableName()}Repository :  ${entity.name}RepositoryMySQL! 
+	#end
+    init() {
+    	// Connect to Database. 
+    	do {
+        	 let connect = mysql.connect (Config.HOST, user:Config.USER, password: Config.PASSWORD)
+        if (connect)
+        {
+            let selectedSchema = mysql.selectDatabase (Config.SCHEMA)
+            if (selectedSchema)
+            {
+#foreach( $entity in $entities)
+			
+			//Variables for ${entity.name}
+			${entity.getVariableName()}Repository = ${entity.name}RepositoryMySQL(db:self.mysql);
+			try ${entity.getVariableName()}Repository.createTable()
+#end
+}
+}
+    	} catch (let e){
+        	print("Failure connecting to  " + Config.SCHEMA+"@"+Config.HOST)
+        	print(e)
+    	}
+    }
+}

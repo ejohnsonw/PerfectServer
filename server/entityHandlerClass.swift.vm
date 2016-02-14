@@ -4,11 +4,6 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="${entity.name}Handlers.swift")
-#set ($filename="${outputDir}/server/${filep}")
+#set ($filename="${outputDir}/${filep}")
 
 #parse('/PerfectSwift/server/EntityHandlers.swift.parse')
-
-
-
-
- 

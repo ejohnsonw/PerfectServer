@@ -4,35 +4,26 @@
 #set ($overwrite="true")
 #set ($enabled="true")
 #set ($filep="${project.name}Server.swift")
-#set ($filename="${outputDir}/${project.name}/server/${filep}")
-
+#set ($filename="${outputDir}/${filep}")
 
 import PerfectLib
 
-
 public func PerfectServerModuleInit() {
-Routing.Handler.registerGlobally()
-Routing.Routes["GET", ["/assets/*/*"]] = { _ in return StaticFileHandler() }
-Routing.Routes["GET", ["/uploads/*"]] = { _ in return StaticFileHandler() }
+	Routing.Handler.registerGlobally()
+	Routing.Routes["GET", ["/assets/*/*"]] = { _ in return StaticFileHandler() }
+	Routing.Routes["GET", ["/uploads/*"]] = { _ in return StaticFileHandler() }
   
 #foreach( $entity in $entities)
-  //Routes for ${entity.name}
-  Routing.Routes["GET", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
-  Routing.Routes["POST", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}CreateHandler() }
-  Routing.Routes["GET", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}RetrieveHandler() }
-  Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
-  Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
-  Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
+	//Routes for ${entity.name}
+	Routing.Routes["GET", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}ListHandler() }
+	Routing.Routes["POST", ["/api/${entity.getVariableName()}"] ] = { (_:WebResponse) in return ${entity.name}CreateHandler() }
+	Routing.Routes["GET", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}RetrieveHandler() }
+	Routing.Routes["PUT", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+	Routing.Routes["POST", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}UpdateHandler() }
+	Routing.Routes["DELETE", "/api/${entity.getVariableName()}/{id}"] = { _ in return ${entity.name}DeleteHandler() }
+	
 #end
-
- print("\(Routing.Routes.description)")
- 
-//Initialize PM and repositories  
-PersistenceManager.sharedInstance
-   
+	print("\(Routing.Routes.description)") 
+	//Initialize PM and repositories  
+	PersistenceManagerMySQL.sharedInstance
 }
-
-
-
-
- 

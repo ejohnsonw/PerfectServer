@@ -1,15 +1,32 @@
+import PerfectLib
 
-class ${entity.name}ListHandler: BaseRequestHandler  {
+class ${entity.name}ListHandler: RequestHandler  {
   
   func handleRequest(request: WebRequest, response: WebResponse) {
-    response.appendBodyString("Index handler: You accessed path \(request.requestURI())")
+  	let ${entity.getVariableName()}s : [${entity.name}]  = PersistenceManagerMySQL.sharedInstance.${entity.getVariableName()}Repository.list()
+  	print (NSJSONSerialization.isValidJSONObject (${entity.getVariableName()}s ))
+  	do{
+        let json = try ${entity.name}.encodeList(${entity.getVariableName()}s );
+        try response.outputJson(json)
+  	}catch{
+  	  response.setStatus (500, message: "Could not list ${entity.name} data")
+  	}
+    //response.appendBodyString("Index handler: You accessed path \(request.requestURI())")
     response.requestCompletedCallback()
   }
 }
 
 class ${entity.name}CreateHandler: RequestHandler {
   func handleRequest(request: WebRequest, response: WebResponse) {
-    response.appendBodyString("Create handler: You accessed path \(request.requestURI())")
+     let ${entity.getVariableName()} = ${entity.name}() 
+     do {
+    	try ${entity.getVariableName()}.decode(request.postBodyString);
+    	let result = try PersistenceManagerMySQL.sharedInstance.${entity.getVariableName()}Repository.insert(${entity.getVariableName()})
+    	let json = try ${entity.getVariableName()}.encode()
+    	try response.outputJson(json)
+    }catch{
+        response.appendBodyString("Error accessing data:  \(error)")
+    }
     response.requestCompletedCallback()
   }
 }

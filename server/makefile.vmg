@@ -2,13 +2,13 @@
 #set ($description="Info.plist")
 #set ($author="Evol Johnson")
 #set ($overwrite="true")
-#set ($enabled="true")
+#set ($enabled="false")
 #set ($header="false")
 #set ($filep="makefile")
 #set ($filename="${outputDir}/${filep}")
 # Makefile for Perfect Server
 
-TARGET = URLRouting
+TARGET = ${project.name}
 OS = $(shell uname)
 URL_ROUTING_SRC = "${project.name}/${project.name}Server.swift"
 PERFECT_ROOT = ../../PerfectLib

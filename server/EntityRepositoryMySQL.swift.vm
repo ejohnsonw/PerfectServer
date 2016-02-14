@@ -1,0 +1,257 @@
+#set ($language="Swift")
+#set ($description="Persistence code for for ${entity.name}")
+#set ($author="Evol Johnson")
+#set ($overwrite="true")
+#set ($enabled="true")
+#set ($filep="${entity.name}RepositoryMySQL.swift")
+#set ($filename="${outputDir}/${filep}")
+
+
+import MySQL
+class ${entity.name}RepositoryMySQL : RepositoryMySQL {
+func createTable() throws ->  Int {
+   let rs = try db.query("${sqlHelper.createTable(${entity},"MySQL",$application.explorer)}")
+   let errorCode = db.errorCode()
+        if errorCode > 0 {
+            throw RepositoryError.CreateTable(errorCode)
+      }
+      return 0;
+}
+func insert(entity: ${entity.name}) throws -> Int64 {
+       	let sql = "${sqlHelper.insertSQL(${entity},"MySQL")}"
+       	
+       	let statement = MySQLStmt(db)
+		defer {
+			statement.close()
+		}
+		let prepRes = statement.prepare(sql)
+		if(prepRes){
+#set($cont=1)
+#foreach($attribute in ${entity.attributes})
+#if(${attribute.name} != "id")
+
+#if(${attribute.domain} == "true")
+#if(${attribute.type} != "Transformable")
+if(entity.${attribute.name} != nil){
+			statement.bindParam(entity.${attribute.name}.id)
+}else{
+			statement.bindParam()
+}
+#else
+			//It's transformable, not supported at the moment
+   			//statement.bindParam(entity.${attribute.name}.id)
+#end
+#end
+#if($attribute.domain == false && $attribute.isCollection() == false)
+#if($attribute.isDate() == true)
+		if(entity.${attribute.name} != nil){
+			statement.bindParam(entity.${attribute.name}.SQLiteDateString)
+		}else{
+			statement.bindParam()
+		}
+#end
+#if($attribute.isDate() == false)
+		if(entity.${attribute.name} != nil){
+			statement.bindParam(entity.${attribute.name})
+		}else{
+			statement.bindParam()
+		}
+#end
+#end
+#set($cont=$cont+1)
+		
+#end
+#end
+
+			let execRes = statement.execute()
+			if(execRes){
+				entity.id = Int64(statement.insertId()) ;
+				return entity.id
+			}else{
+				print("\(statement.errorCode()) \(statement.errorMessage()) - \(db.errorCode()) \(db.errorMessage())")
+				let errorCode = db.errorCode()
+				if errorCode > 0 {
+				    throw RepositoryError.Insert(errorCode)
+				}
+			}
+				
+			statement.close()
+	}        
+ 	return 0
+	}
+    
+	func update(entity: ${entity.name}) throws -> Int {
+        guard let id = entity.id else {
+            return 0
+        }
+        
+        let sql = "${sqlHelper.updateSQL(${entity},"MySQL")}"
+
+let statement = MySQLStmt(db)
+		defer {
+			statement.close()
+		}
+		let prepRes = statement.prepare(sql)
+		
+		if(prepRes){		
+#set($cont=1)
+#foreach($attribute in ${entity.attributes})
+#if(${attribute.name} != "id")
+
+#if(${attribute.domain} == "true")
+#if(${attribute.type} != "Transformable")
+if(entity.${attribute.name} != nil){
+			statement.bindParam(entity.${attribute.name}.id)
+}else{
+			statement.bindParam()
+}
+#else
+			//It's transformable, not supported at the moment
+   			//statement.bindParam(entity.${attribute.name}.id)
+#end
+#end
+#if($attribute.domain == false && $attribute.isCollection() == false)
+#if($attribute.isDate() == true)
+		if(entity.${attribute.name} != nil){
+			statement.bindParam(entity.${attribute.name}.SQLiteDateString)
+		}else{
+			statement.bindParam()
+		}
+#end
+#if($attribute.isDate() == false)
+		if(entity.${attribute.name} != nil){
+			statement.bindParam(entity.${attribute.name})
+		}else{
+			statement.bindParam()
+		}
+#end
+#end
+#set($cont=$cont+1)
+		
+#end
+#end
+			statement.bindParam(entity.id)
+			let execRes = statement.execute()
+			if(!execRes){
+				print("\(statement.errorCode()) \(statement.errorMessage()) - \(db.errorCode()) \(db.errorMessage())")
+				let errorCode = db.errorCode()
+				if errorCode > 0 {
+				    throw RepositoryError.Update(errorCode)
+				}
+			}
+	
+			statement.close()
+		}
+        
+		return 0
+    }
+    
+	func delete(entity: ${entity.name}) throws -> Int {
+	    guard let id = entity.id else {
+	        return 0
+	    }
+	    
+	    let sql = "DELETE FROM ${entity.getVariableName()} WHERE id = ?"
+	    let statement = MySQLStmt(db)
+		defer {
+			statement.close()
+		}
+		let prepRes = statement.prepare(sql)
+		
+		if(prepRes){
+			//HARDCODED might not exist, assuming it does, need to retrieve PK
+			statement.bindParam(entity.id)
+			
+			let execRes = statement.execute()
+	        if(!execRes){
+				print("\(statement.errorCode()) \(statement.errorMessage()) - \(db.errorCode()) \(db.errorMessage())")
+				let errorCode = db.errorCode()
+				if errorCode > 0 {
+	    			throw RepositoryError.Delete(errorCode)
+				}
+				statement.close()
+			}
+				
+		}
+		return 0
+	}
+    
+    func retrieve(id: Int) throws -> ${entity.name}? {
+        let sql = "${sqlHelper.retrieveSQL(${entity},"MySQL")}"
+       	let statement = MySQLStmt(db)
+		defer {
+			statement.close()
+		}
+		let prepRes = statement.prepare(sql)
+		let entity = ${entity.name}()
+		if(prepRes){
+			//HARDCODED might not exist, assuming it does, need to retrieve PK
+			statement.bindParam(id)
+			
+			let execRes = statement.execute()
+            if(!execRes){
+            	let results = statement.results()
+            	
+            	let ok = results.forEachRow { e in
+            		print(e.flatMap({ (a:Any?) -> Any? in
+                    return a!
+                	}))
+                	
+                	print("Another sentence")
+				}
+			
+				print("\(statement.errorCode()) \(statement.errorMessage()) - \(db.errorCode()) \(db.errorMessage())")
+				let errorCode = db.errorCode()
+				if errorCode > 0 {
+	    			throw RepositoryError.Delete(errorCode)
+				}
+				statement.close()
+			}
+				
+		}
+	    return entity;
+    }
+    
+    func list() -> [${entity.name}] {
+        let sql = "SELECT * FROM ${entity.getVariableName()} "
+        var entities = [${entity.name}]()
+        
+        let queryResult = db.query(sql)
+        let results = db.storeResults()!
+  
+        while let row = results.next() {
+        	let ${entity.getVariableName()} = ${entity.name}()
+#set($cont=0)
+#foreach($attribute in ${entity.attributes})
+##// ${attribute.type} ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}
+#if(${attribute.domain} == "true")
+#if(${attribute.type} != "Transformable")
+			${entity.getVariableName()}.${attribute.name}.id = row[${cont}];
+#else
+			//It's transformable, not supported at the moment
+		   //${entity.getVariableName()}.${attribute.name}.id = row[${cont}];
+#end
+#else
+#if($attribute.isDate() == true)
+			${entity.getVariableName()}.${attribute.name} = ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}(string: row[${cont}]);
+#else
+#if($attribute.isBool() == true)
+			if(row[${cont}] == "1"){
+			   	${entity.getVariableName()}.${attribute.name} = Bool(true);
+			}else{
+				${entity.getVariableName()}.${attribute.name} = Bool(false);
+			}
+#else
+			${entity.getVariableName()}.${attribute.name} = ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}(row[${cont}]);
+#end
+#end
+#end
+#set($cont=$cont+1)
+#end
+			entities.append(${entity.getVariableName()})
+            print(row)
+        }
+        results.close()
+        return entities
+    }
+}
