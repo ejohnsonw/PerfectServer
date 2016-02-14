@@ -33,21 +33,42 @@ class ${entity.name}CreateHandler: RequestHandler {
 
 class ${entity.name}RetrieveHandler: RequestHandler {
   func handleRequest(request: WebRequest, response: WebResponse) {
-    response.appendBodyString("Retrieve handler: You accessed path \(request.requestURI())")
+   let id = Int64(request.urlVariables["id"]!)
+    do{
+        let ${entity.getVariableName()} : ${entity.name}  = try PersistenceManagerMySQL.sharedInstance.${entity.getVariableName()}Repository.retrieve(id!)!
+        let json = try ${entity.getVariableName()}.encode()
+        try response.outputJson(json)
+    }catch{
+        response.setStatus (500, message: "Could not retrieve ${entity.name} \(id) data")
+    }
     response.requestCompletedCallback()
   }
 }
 
 class ${entity.name}UpdateHandler: RequestHandler {
   func handleRequest(request: WebRequest, response: WebResponse) {
-    response.appendBodyString("Retrieve handler: You accessed path \(request.requestURI())")
-    response.requestCompletedCallback()
+    do {
+     	let ${entity.getVariableName()} = ${entity.name}() 
+    	try ${entity.getVariableName()}.decode(request.postBodyString);
+    	let result = try PersistenceManagerMySQL.sharedInstance.${entity.getVariableName()}Repository.update(${entity.getVariableName()})
+    	let json = try ${entity.getVariableName()}.encode()
+    	try response.outputJson(json)
+    }catch{
+        response.appendBodyString("Error accessing data:  \(error)")
+    }
   }
 }
 
 class ${entity.name}DeleteHandler: RequestHandler {
   func handleRequest(request: WebRequest, response: WebResponse) {
-    response.appendBodyString("Retrieve handler: You accessed path \(request.requestURI())")
+    let id = Int64(request.urlVariables["id"]!)
+    do{
+        let result = try PersistenceManagerMySQL.sharedInstance.${entity.getVariableName()}Repository.delete(id!)
+        //let json = try ${entity.getVariableName()}.encode()
+        try response.outputJson("{\"id\":\(id),\"message\":\"deleted\"}")
+    }catch{
+        response.setStatus (500, message: "Could not delete ${entity.name} \(id) data")
+    }
     response.requestCompletedCallback()
   }
 }

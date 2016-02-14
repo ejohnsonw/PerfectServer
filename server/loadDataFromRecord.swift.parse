@@ -1,0 +1,27 @@
+#set($cont=0)
+#foreach($attribute in ${entity.attributes})
+##// ${attribute.type} ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}
+#if(${attribute.domain} == "true")
+##if(${attribute.type} != "Transformable")
+##			${entity.getVariableName()}.${attribute.name}.id = row[${cont}];
+##else
+##			//It's transformable, not supported at the moment
+##		   //${entity.getVariableName()}.${attribute.name}.id = row[${cont}];
+##end
+#else
+#if($attribute.isDate() == true)
+			${entity.getVariableName()}.${attribute.name} = ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}(string: row[${cont}]);
+#else
+#if($attribute.isBool() == true)
+			if(row[${cont}] == "1"){
+			   	${entity.getVariableName()}.${attribute.name} = Bool(true);
+			}else{
+				${entity.getVariableName()}.${attribute.name} = Bool(false);
+			}
+#else
+			${entity.getVariableName()}.${attribute.name} = ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}(row[${cont}]);
+#end
+#end
+#set($cont=$cont+1)
+#end
+#end

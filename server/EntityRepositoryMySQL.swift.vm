@@ -146,74 +146,27 @@ if(entity.${attribute.name} != nil){
 		return 0
     }
     
-	func delete(entity: ${entity.name}) throws -> Int {
-	    guard let id = entity.id else {
-	        return 0
-	    }
-	    
-	    let sql = "DELETE FROM ${entity.getVariableName()} WHERE id = ?"
-	    let statement = MySQLStmt(db)
-		defer {
-			statement.close()
-		}
-		let prepRes = statement.prepare(sql)
-		
-		if(prepRes){
-			//HARDCODED might not exist, assuming it does, need to retrieve PK
-			statement.bindParam(entity.id)
-			
-			let execRes = statement.execute()
-	        if(!execRes){
-				print("\(statement.errorCode()) \(statement.errorMessage()) - \(db.errorCode()) \(db.errorMessage())")
-				let errorCode = db.errorCode()
-				if errorCode > 0 {
-	    			throw RepositoryError.Delete(errorCode)
-				}
-				statement.close()
-			}
-				
-		}
-		return 0
+	func delete(id: Int64) throws -> Int64 {
+	    let sql = "DELETE FROM ${entity.getVariableName()} WHERE id = \(id)"
+	    let queryResult = db.query(sql)
+	    return id;
 	}
     
-    func retrieve(id: Int) throws -> ${entity.name}? {
-        let sql = "${sqlHelper.retrieveSQL(${entity},"MySQL")}"
-       	let statement = MySQLStmt(db)
-		defer {
-			statement.close()
-		}
-		let prepRes = statement.prepare(sql)
-		let entity = ${entity.name}()
-		if(prepRes){
-			//HARDCODED might not exist, assuming it does, need to retrieve PK
-			statement.bindParam(id)
-			
-			let execRes = statement.execute()
-            if(!execRes){
-            	let results = statement.results()
-            	
-            	let ok = results.forEachRow { e in
-            		print(e.flatMap({ (a:Any?) -> Any? in
-                    return a!
-                	}))
-                	
-                	print("Another sentence")
-				}
-			
-				print("\(statement.errorCode()) \(statement.errorMessage()) - \(db.errorCode()) \(db.errorMessage())")
-				let errorCode = db.errorCode()
-				if errorCode > 0 {
-	    			throw RepositoryError.Delete(errorCode)
-				}
-				statement.close()
-			}
-				
-		}
-	    return entity;
+    func retrieve(id: Int64) throws -> ${entity.name}? {
+        let sql = "${sqlHelper.retrieveSQL(${entity},"MySQL")} WHERE id = \(id)"
+		let queryResult = db.query(sql)
+        let results = db.storeResults()!
+  		let ${entity.getVariableName()} = ${entity.name}()
+        while let row = results.next() {
+			#parse('/PerfectSwift/server/loadDataFromRecord.swift.parse')
+            print(row)
+        }
+        results.close()
+	    return ${entity.getVariableName()};
     }
     
     func list() -> [${entity.name}] {
-        let sql = "SELECT * FROM ${entity.getVariableName()} "
+        let sql = "${sqlHelper.retrieveSQL(${entity},"MySQL")} "
         var entities = [${entity.name}]()
         
         let queryResult = db.query(sql)
@@ -221,33 +174,7 @@ if(entity.${attribute.name} != nil){
   
         while let row = results.next() {
         	let ${entity.getVariableName()} = ${entity.name}()
-#set($cont=0)
-#foreach($attribute in ${entity.attributes})
-##// ${attribute.type} ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}
-#if(${attribute.domain} == "true")
-#if(${attribute.type} != "Transformable")
-			${entity.getVariableName()}.${attribute.name}.id = row[${cont}];
-#else
-			//It's transformable, not supported at the moment
-		   //${entity.getVariableName()}.${attribute.name}.id = row[${cont}];
-#end
-#else
-#if($attribute.isDate() == true)
-			${entity.getVariableName()}.${attribute.name} = ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}(string: row[${cont}]);
-#else
-#if($attribute.isBool() == true)
-			if(row[${cont}] == "1"){
-			   	${entity.getVariableName()}.${attribute.name} = Bool(true);
-			}else{
-				${entity.getVariableName()}.${attribute.name} = Bool(false);
-			}
-#else
-			${entity.getVariableName()}.${attribute.name} = ${dth.convertModelTypeToLanguageType("Swift",$attribute,$application.explorer)}(row[${cont}]);
-#end
-#end
-#end
-#set($cont=$cont+1)
-#end
+			#parse('/PerfectSwift/server/loadDataFromRecord.swift.parse')
 			entities.append(${entity.getVariableName()})
             print(row)
         }
